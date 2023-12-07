@@ -12,8 +12,9 @@ class BookDetailed:
         response = req.get(self.bookUrl).content
 
         obj = Bs(response, 'html.parser')
-
-        downloadLink = obj.select("h2 a")
+        downLoadDiv=obj.select("#download h2>a")
+        downloadLink = downLoadDiv[0]['href']
+        # downloadLink = obj.select("h2 a")
         description = obj.select("p+ div")
         resultDict = {}
         # if website is overloaded it returns a empty list
@@ -28,9 +29,9 @@ class BookDetailed:
             book = {}
             for desc in description:
                 book['description'] = desc.text.split("Description:")[1]
-            for link in downloadLink:
-                book['download'] = link['href']
-
+            # for link in downloadLink:
+                # book['download'] = link['href']
+            book['download'] = downloadLink
             resultDict['bookData'] = book
             resultDict['result'] = "success"
             resultDict['status'] = "200"
